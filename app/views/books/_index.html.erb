@@ -18,8 +18,15 @@
         <td><%= book.body %></td>
         <td>
             <% if current_user.already_favorited?(book) %>
-            
+             <%= link_to book_favorites_path(book), method: :delete do %>
+               <i class="fas fa-heart"></i>
+             <% end %>
+            <% else %>
+             <%= link_to book_favorites_path(book), method: :post do %>
+               <i class="far fa-heart"></i>
+             <% end %>
             <% end %>
+            <%= book.favorites.count %>
         </td>
       </tr>
     <% end %>
