@@ -1,6 +1,6 @@
 <table class='table'>
   <tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
-  
+
   <tr>
 	  <th>name</th>
 	  <th><%= user.name %></th>
@@ -10,28 +10,43 @@
 	  <th><%= user.introduction %></th>
   </tr>
   <tr>
-    <th><%= link_to 'follows'+": #{@user.followers.count}", followings_user_path(@user.id) %></th>
-    <th><%= link_to 'follower'+": #{@user.followings.count}", followers_user_path(@user.id) %></th>
+    <th>follower</th>
+    <th><%= link_to "#{user.follower_users.count}", followers_user_path(user.id) %></th>
   </tr>
   <tr>
-    <% unless @user == current_user %>
-      <% if current_user.following?(@user) %>
-          <%= button_to t('show.unfollow'), relationship_path(@relationship), method: :delete %></th>
-      <% else %>
-          <%= form_for(@user.followers.build) do |f| %>
-          <%= hidden_field_tag :follow_id, @user.id %>
-          <%= f.submit t('show.follow'), class: 'btn btn-primary btn-block' %>
-        <% end %>
-      <% end %>
-    <% end %>
+    <th>follows</th>
+    <th><%= link_to " #{user.following_users.count}", followings_user_path(user.id) %></th>
   </tr>
-  
-  
-  
+  <tr>
+
+  </tr>
+
 </table>
 
+<div class="row">
+  <%= render 'relationships/follow_btn', user: current_user %>
+  <% unless user == current_user %>
+    <% if current_user.following?(user) %>
 
+        <% @relationship = current_user.followers.find_by(followed_id: user.id) %>
 
+        <%= form_with model: @relationship, html: { method: :delete }, class: "w-100" do |f| %>
+             <%= f.hidden_field :followed_id,:value => user.id %>
+          <p><%= f.submit 'Unfollow', class: 'btn btn-danger btn-block w-100' %></p>
+        <% end %>
+
+    <% else %>
+
+      <% @relationship = current_user.followers.build %>
+
+      <%= form_with model: @relationship, class: "w-100" do |f| %>
+          <%= f.hidden_field :followed_id, :value =>user.id %>
+        <p><%= f.submit "Follow", class: 'btn btn-primary btn-block w-100' %></p>
+      <% end %>
+
+    <% end %>
+<% end %>
+</div>
 
 <div class='row'>
   <%= link_to '',edit_user_path(user),class: "btn btn-outline-secondary btn-block fas fa-user-cog edit_user_#{user.id}" %>

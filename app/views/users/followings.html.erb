@@ -1,8 +1,7 @@
-<% @followers.each do |user| %>
-  <table>
-    <tr>
-      <td>  <%= user.name %> </td>
-      <td><%= link_to 'profile', user_path(user) %></td>
-    </tr>
-  </table>
+<h2>Follow Users</h2>
+
+<% @followings.each do |user| %>
+
+  <%= render 'index',users: @followings %>
+
 <% end %>

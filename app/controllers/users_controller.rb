@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :ensure_correct_user, only: [:update, :edit]
-  before_action :set_user
+  # before_action :set_user, only:[:show, :followings, :followers]
 
   def show
     @user = User.find(params[:id])
@@ -28,28 +28,30 @@ class UsersController < ApplicationController
   end
 
   def followings
-        @followings = @user.following_users
+    @user = User.find(params[:id])
+    @followings = @user.following_users
   end
-    
+
   def followers
-        @followers = @user.follower_users
+    @user = User.find(params[:id])
+    @followers = @user.follower_users
   end
 
   private
-  def set_user
-    @user = User.find(params[:id])
-  end
-  
+  # def set_user
+  #   @user = User.find(params[:id])
+  # end
+
   def user_params
     params.require(:user).permit(:name, :introduction, :profile_image)
   end
-  
+
   def ensure_correct_user
     @user = User.find(params[:id])
     unless @user == current_user
       redirect_to user_path(current_user)
     end
   end
-  
-  
+
+
 end
