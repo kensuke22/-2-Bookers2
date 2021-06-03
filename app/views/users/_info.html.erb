@@ -1,5 +1,6 @@
 <table class='table'>
   <tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+  
   <tr>
 	  <th>name</th>
 	  <th><%= user.name %></th>
@@ -8,7 +9,29 @@
 	  <th>introduction</th>
 	  <th><%= user.introduction %></th>
   </tr>
+  <tr>
+    <th><%= link_to 'follows'+": #{@user.followers.count}", followings_user_path(@user.id) %></th>
+    <th><%= link_to 'follower'+": #{@user.followings.count}", followers_user_path(@user.id) %></th>
+  </tr>
+  <tr>
+    <% unless @user == current_user %>
+      <% if current_user.following?(@user) %>
+          <%= button_to t('show.unfollow'), relationship_path(@relationship), method: :delete %></th>
+      <% else %>
+          <%= form_for(@user.followers.build) do |f| %>
+          <%= hidden_field_tag :follow_id, @user.id %>
+          <%= f.submit t('show.follow'), class: 'btn btn-primary btn-block' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tr>
+  
+  
+  
 </table>
+
+
+
 
 <div class='row'>
   <%= link_to '',edit_user_path(user),class: "btn btn-outline-secondary btn-block fas fa-user-cog edit_user_#{user.id}" %>
