@@ -1,12 +1,61 @@
-<%= form_tag(search_search_path , method: :get) do %>
-    <%= select(@search_content, :search_method, [["前方一致","forward_match"], ["後方一致","backward_match"], ["完全一致","perfect_match"], ["部分一致","partial_match"]])%>
-    <%= text_field(@search_content, :search_word)%>
-    <%= submit_tag "検索" %>
-<% end %>
 
-<ul><% @users.each do |user| %>
-  <li>
-    <td><%= user.name %></td>
-  </li>
-  <% end %>
-</ul>
+<table class="table table-hover table-inverse">
+　<% if @range != 1 %>
+  <thead>
+   <h2>Books search <%= @word %> </h2>
+    <tr>
+     <th></th>
+     <th>Title</th>
+     <th>Opinion</th>
+     <th colspan="3"></th>
+    </tr>
+  </thead>
+
+ <tbody>
+      <% @book.each do |book| %>
+      <tr>
+       <td>
+        <%= link_to(book.user) do %>
+        <%= attachment_image_tag(book.user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %>
+        <% end %>
+       </td>
+       <td>
+        <%= link_to book.title, book, class: "book_#{book.id}" %>
+       </td>
+       <td><%= book.body %></td>
+      </tr>
+      <% end %>
+ </tbody>
+
+<% else %>
+  <thead>
+   <h2>Users search <%= @word %> </h2>
+     <tr>
+      <th>image</th>
+      <th>name</th>
+      <th colspan="3"></th>
+     </tr>
+   </thead>
+
+   <tbody>
+    <% @user.each do |user| %>
+     <tr>
+      <td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
+      <td><%= user.name%></td>
+      <td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
+     </tr>
+    <% end %>
+   </tbody>
+   <% end %>
+ </table>
+
+
+<!--<%# if @range == 1 %>-->
+<!--  <%# render ...%>-->
+<!--<%# elsif @range == 2 %>-->
+<!--  <%# render ...%>-->
+<!--<%# elsif @range == 3 %>-->
+<!--  <%# render ... %>-->
+<!--<%# else %>-->
+<!--  <%# render ...%>-->
+<!--<%# end %>-->
