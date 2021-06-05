@@ -1,5 +1,12 @@
-<%= form_tag(posts_search_path , method: :get) do %>
+<%= form_tag(search_search_path , method: :get) do %>
     <%= select(@search_content, :search_method, [["前方一致","forward_match"], ["後方一致","backward_match"], ["完全一致","perfect_match"], ["部分一致","partial_match"]])%>
     <%= text_field(@search_content, :search_word)%>
     <%= submit_tag "検索" %>
 <% end %>
+
+<ul><% @users.each do |user| %>
+  <li>
+    <td><%= user.name %></td>
+  </li>
+  <% end %>
+</ul>
