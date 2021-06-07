@@ -1,4 +1,4 @@
-<% @book.book_comments.each do |book_comment| %>
+<% book.book_comments.each do |book_comment| %>
       <%= link_to attachment_image_tag(book_comment.user, :profile_image, :fill, 100, 100, fallback: "no-image-icon.jpg"), user_path(book_comment.user) %>
       <%= book_comment.comment %>
 
